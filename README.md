@@ -81,7 +81,7 @@ seçmeyebilir */
 ```
 
 ---
-
+// notlar tamamen Escan'a aittir
 ### Veri tipi dönüşümü
 
 ```csharp
@@ -129,7 +129,7 @@ string str = string.Format("my name is {0} {1} and I'm {2} ",name,surname,age);
 
 string str = $"My name is {name}"; //şeklinde de kullanılır
 ```
-
+// notlar tamamen Escan'a aittir
 ### String metodları
 
 ```csharp
@@ -211,7 +211,7 @@ Array.Reverse(numaralar);//en büyük sayıyı alır
 
 var result = isimler[1..4];// 1 den 4. elemana kadar
 ```
-
+// notlar tamamen Escan'a aittir
 ### Date time
 
 ```csharp
@@ -266,7 +266,7 @@ val = a++; // 11
 
 val = b-- // 19
 ```
-
+// notlar tamamen Escan'a aittir
 ### Atama Operatörleri
 
 ```csharp
@@ -306,7 +306,7 @@ a >= b;// a b den büyükmü yada eşit mi ?
 
 string sonuc = (usurname == escan)?"şifre doğru":"şifre yanlış";
 ```
-
+// notlar tamamen Escan'a aittir
 ### Mantıksal Operatörler
 
 ```csharp
@@ -322,7 +322,7 @@ result =  (x<5) || (x<10)// Or opreatörü ikisinden biri doğru olması yeter T
 
 result =  !(x<10) // true => false | false => true çevirir
 ```
-
+// notlar tamamen Escan'a aittir
 ## koşul ifadeleri
 
 ### if/else
@@ -378,7 +378,7 @@ else{
 }
 
 ```
-
+// notlar tamamen Escan'a aittir
 ### switch
 
 ```csharp
@@ -417,7 +417,7 @@ for (int i = 50; i >= 1;i=i -2)//i 1 den büyük olana kadar 2 çıkartır
 Console.WriteLine(i);
 }
 ```
-
+// notlar tamamen Escan'a aittir
 ### While
 
 ```csharp
@@ -660,7 +660,7 @@ namespace consoleapp
     }
 }
 ```
-
+// notlar tamamen Escan'a aittir
 ### Metot parametreleri
 
 ```csharp
@@ -766,7 +766,7 @@ değişkeni değiştirebilir */
 console.Write(p.name);
 console.Write(p.Price);//Price ekrana yazıyor yani _price ı
 ```
-
+// notlar tamamen Escan'a aittir
 ### Static member
 
 ```csharp
@@ -892,7 +892,7 @@ var s = new Student("Çınar","Turan");
 p.Intro();
 s.Intro();
 ```
-
+// notlar tamamen Escan'a aittir
 ### Abstract sınıf
 
 ```csharp
@@ -997,7 +997,7 @@ foreach (var personel in personeller){
 personel.bilgi();
 }
 ```
-
+// notlar tamamen Escan'a aittir
 ### ArrayList
 
 ```csharp
@@ -1066,7 +1066,7 @@ plakalar.Add(34,"istanbul"); //key 34 değer ise istanbul
 plakalar.Add(35,"izmir");
 
 ```
-
+// notlar tamamen Escan'a aittir
 ## Hata Yönetimi
 
 ### Hata Yönetimi
