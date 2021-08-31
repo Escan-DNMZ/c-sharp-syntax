@@ -15,17 +15,19 @@ kod sonları **( ; )** ile belirtilir, stringler alert veya console.log **( ``,'
 
 - Değişken tipi
 
-    int
+    int = sayı değerleri girildiğinde
 
-    string
+    string = kelime değerleri girildiğinde
 
-    bool
+    bool = true false sorguları için
 
-    float
+    float = 12.34f şeklinde ondalık sayılarda kullanılır
 
-    double
+    double = float gibi onladık sayılarda kullanılır daha büyük değerler içindir 123.04; kullanımı bu şekilde
 
-    decimal
+    decimal = 12.34m; şeklinde kullanılır float ve double gibidir
+    
+    var = string ve int türünden değerler atıyabilirsiniz
 
 - Değişken adı
 
@@ -1147,4 +1149,458 @@ Console.WriteLine("parola geçerli.");
 catch(Exception ex){
 Console.Weiteline(ex.Message)
 }
+```
+### Veri Tabanı Bağlantısı
+
+```csharp
+//Main alanı
+GetSqlConnection();
+
+// Main alanın altına
+static void GetMySqlConnection{
+	 string connectionString = @"server=localhost;port:3306;database=ShopApp;user=
+root;password=1234"
+
+using(var connection = new MySqlConnection(connectionString)){
+	try{
+		connection.Open();
+		Console.WriteLine("Bağlantı sağlandı");
+  }
+	catch(Exception e){
+   Console.Writeline(e.Message)
+	}
+	finally{
+	connection.Close
+	}
+}
+}
+
+//View+ çıkan arama çubuğuna MySql.Data tıklayın son
+//versiyonu onaylayın
+//ardından çıkan ConsoleApp.csproj da konsole dotnet restore yaz
+
+```
+
+### Veri tabanı tüm ürün bilgilerinin alınması
+
+```csharp
+//Main alanı
+GetAllProduct();
+//Main alanın altı
+static void GetAllProduct()
+        {
+            using(var connection = GetMySqlConnection()) //anahtar ve kili burda
+// birleştirdik
+            {
+                try
+                {
+                    connection.Open();
+                    //connection sağla
+
+                    string sql = "select * from Product";
+										//Product tablosunu seç
+
+                    MySqlCommand command = new MySqlCommand(sql,connection);
+										//sql ile connection ı bağladık böylece komut işe yarayacak
+
+                    MySqlDataReader reader = command.ExecuteReader();
+										//bu reader değişkeni sayesinde bu bilgileri okuycaz
+
+                    while(reader.Read())
+                    {
+                        Console.WriteLine($"name: {reader[1]} price:{reader[2]}");
+                      //Burda reader ile okuyacağı kolonu seçtik
+                    }
+                    reader.Close();
+										//okuyucuyu kapattık
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        static MySqlConnection GetMySqlConnection()
+        {
+            string connectionString = @"server=localhost;port=3306;database=ShopApp;user=root;password=er266914";
+//Veri tabanına gireceğimiz anahtarı oluşturduk
+            return new MySqlConnection(connectionString);    
+//burda da kilidi çağırdık yani connectionString i     
+        }
+```
+
+### verileri nesne ile taşıma
+
+```csharp
+//namespace alanı ayrı bir program.cs alanında
+ class Program{
+public int ProductId {get;set;}
+public string Name {get;set;}  //Altta yazdığımız kodlar sayesinde veri tabanını buraya taşıdık
+public double Price {get;set;}
+}
+
+//Main alanı
+
+var products = GetAllProduct();
+
+foreach (var pr in products){
+Console.WriteLine($"name: {pr.Name} price: {pr.Price}")
+}
+
+//Main alanın altı
+static List<Product> GetAllProduct()
+        {
+						List<Product> products = null;
+						
+            using(var connection = GetMySqlConnection()) //anahtar ve kili burda
+// birleştirdik
+            {
+		return products;
+                try
+                {
+                    connection.Open();
+                    //connection sağla
+
+                    string sql = "select * from Product";
+		   //Product tablosunu seç
+
+                    MySqlCommand command = new MySqlCommand(sql,connection);
+		//sql ile connection ı bağladık böylece komut işe yarayacak
+
+                    MySqlDataReader reader = command.ExecuteReader();
+			//bu reader değişkeni sayesinde bu bilgileri okuycak
+
+				products = new List<Product>();
+				 //list e gelip command+. ile using ini ekleyin
+
+                    while(reader.Read())
+                    {
+			products.Add(
+			  new Product
+		           {
+				 ProductId=int.Parse(reader["id"].ToString()),
+				//ProductId yi veri tabanındaki id ile eşliyoruz
+		               Name = reader["product_name"].ToString(),
+		      	      //Name i veritabanındaki product_name ile eşliyoruz
+		              Price = double.Parse(reader["list_price"]?.ToString()),
+				//Price ı veri tabanındaki lisr_price ile eşliyoruz
+		           }
+			    );
+
+                        Console.WriteLine($"name: {reader[1]} price:{reader[2]}");
+                      //Burda reader ile okuyacağı kolonu seçtik
+                    }
+                    reader.Close();
+		  //okuyucuyu kapattık
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        static MySqlConnection GetMySqlConnection()
+        {
+            string connectionString = @"server=localhost;port=3306;database=ShopApp;user=root;password=er266914";
+//Veri tabanına gireceğimiz anahtarı oluşturduk
+            return new MySqlConnection(connectionString);    
+//burda da kilidi çağırdık yani connectionString i     
+        }
+```
+
+### Scaler ile çalışmak
+
+<img width="712" alt="Screen Shot 2021-08-31 at 17 25 58" src="https://user-images.githubusercontent.com/84273839/131520596-f859f266-767c-4bba-83a9-5dda930dbf31.png">
+
+### Verilere Ürün Ekleme Çıkarma Güncelleme
+
+<img width="712" alt="Screen Shot 2021-08-31 at 17 26 44" src="https://user-images.githubusercontent.com/84273839/131520714-a814e71f-d23f-4dd3-8de0-f9cb36bb0eed.png">
+
+
+<img width="699" alt="Screen Shot 2021-08-31 at 17 27 21" src="https://user-images.githubusercontent.com/84273839/131520820-b9781cdb-65c1-45c2-983b-cc37a57cf653.png">
+<img width="712" alt="image" src="https://user-images.githubusercontent.com/84273839/131520931-a0a53a88-6995-471d-a7d8-9aadff6a32a1.png">
+
+
+## ORM - Entity Framework
+
+### Entity sınıflar
+
+```csharp
+//Product (Id,Name,Price) => Product(Id,Name,Price)
+
+public class Product{
+//primary key (Id, <type_name>Id)
+
+public int Id {get;set;}
+[MaxLength(100)]//Maksimum 100 değer atanabilir dedik command+. namespace ekle
+[Required] //zorunlu bir değer olduğunu söyledik
+public string Name {get;set;}
+
+public decimal Price {get;set;}
+}
+
+public class Category
+{
+public int Id {get;set;}
+
+public string Name {get;set;}
+}
+```
+
+### Context sınıfın eklenmesi ve Veri tabanı oluşturma
+
+<img width="620" alt="Screen Shot 2021-08-31 at 17 25 23" src="https://user-images.githubusercontent.com/84273839/131520498-05fab448-2c46-401e-be9f-f6583b694ee5.png">
+
+
+```csharp
+/* Aşağıdaki kodları yazdıkdan sonra veri tabanı ile sekronize oluyoruz üstteki
+Üstteki görseldeki kodları sırasıyla terminale yazdığımızda veri tabnımızı bize
+oluşturur*/
+
+// Model First (Yeni Veritabanı Oluşturma Visual Studio İle)(Şuan yaptığımız)
+// Database First (Var Olan Veritabanını Kullanma)
+// Code First (Yeni Veritabanı Kod Yazarak)
+// Code First(Var Olan Veritabanını Kullanma)
+
+public class ShopContext:DbContext //command+. yapıp using ini ekle
+{
+public DbSet<Product> Products {get;set;}
+public DbSet<Category> Categories {get;set;}
+
+protected override void OnConfiguring(DbContextOpitonsBuilder optionsBuilder){
+//DbContextOptionsBuilder a cmd+. diyerek change ile başlayan seçeneğe tıklayın
+optionsBuilder.UseMysql(@"server=localhost;port=3306;database=Shop;user=root;password=er266914");
+
+}
+}
+
+public class Product{
+//primary key (Id, <type_name>Id)
+
+public int Id {get;set;}
+[MaxLength(100)]//Maksimum 100 değer atanabilir dedik command+. namespace ekle
+[Required] //zorunlu bir değer olduğunu söyledik
+public string Name {get;set;}
+
+public decimal Price {get;set;}
+}
+
+public class Category
+{
+public int Id {get;set;}
+
+public string Name {get;set;}
+}
+```
+
+### Kayıt ekleme
+
+```csharp
+
+public class ShopContext:DbContext 
+{
+public DbSet<Product> Products {get;set;}
+public DbSet<Category> Categories {get;set;}
+
+protected override void OnConfiguring(DbContextOpitonsBuilder optionsBuilder){
+
+optionsBuilder.UseMysql(@"server=localhost;port=3306;database=Shop;user=root;password=er266914");
+
+}
+}
+
+public class Product{
+
+public int Id {get;set;}
+[MaxLength(100)]
+[Required] 
+public string Name {get;set;}
+
+public decimal Price {get;set;}
+}
+
+public class Category
+{
+public int Id {get;set;}
+
+public string Name {get;set;}
+}
+
+//MAİN alanı
+
+using(var db = new ShopContext()){
+
+var p = new Product {Name = "Samsung S5",Price = 2000};
+// p değişkenine Name ve price değerlerini atadık
+
+db.Products.Add(p);
+//başta atadoğomız db komutuyla products tablosuna p yi ekledik
+
+db.SaveChanges
+// yaptığımız herşeyi save ledik ki görünsün
+
+Console.WriteLine("Veriler eklendi");
+}
+
+**Eğer birden fazla kategori eklemek istiyorsak**
+
+using(var db = new ShopContext()){
+
+var products = new List<Product>//cmd+. ile namespace ini ekle
+{
+	//products değişkenine bütün listeyi atadık
+	 new Product {Name = "Samsung S6",Price = 2000},
+	 new Product {Name = "Samsung S7",Price = 4000},
+	 new Product {Name = "Samsung S8",Price = 5000}
+	
+};
+
+db.Products.AddRange(products);//Products tablosuna products değişkenini yolladık
+
+db.SaveChanges
+// yaptığımız herşeyi save ledik ki görünsün
+
+Console.WriteLine("Veriler eklendi");
+}
+
+```
+
+### Kayıt seçme
+
+```csharp
+//Main alan
+GetAllProducts();
+
+//main alanın altına
+static void GetAllProducts(){
+using(var context = new ShopContext()){
+
+	var products = context
+.Products
+.Select(product => new {
+	p.name,
+	p.price
+})
+.ToList(); //cmd+. ile namespace ekle ToList SaveChanges ile aynı görevde
+	
+	foreach(var p in products){
+	Console.WriteLine($"name: {p.Name} price: {p.Price}");
+	}
+	
+	
+}
+}
+```
+
+### Kayıt güncelleme
+
+```csharp
+//Main alan
+UpdateProduct();
+//main alanı altı
+static void UpdateProduct(){
+	using(var db = new ShopContext()){
+
+	var entity = new Product(){Id=1};
+	//Id 1 i değiştireceğimiz söyledik
+
+	db.Products.Attach(entity);
+	//attach anlamı ise entity yi takip etmek olarak atadık eğer entity takip etmez
+  // ise kod başarısız olur
+
+	entity.Price = 3000;
+	//fiyatı 3000 olarak değiştirdik
+
+	db.SaveChanges();
+
+	}
+}
+```
+
+### kayıt silme
+
+```csharp
+// Main alan
+DeleteProduct();
+
+//Main alan altı
+
+static void DeleteProduct(int id){
+
+using(var db = new ShopContext()){
+	var p = new Product(){Id==6};
+
+	db.Products.Remove(p);
+	db.SaveChanges();	
+
+ }
+}
+```
+
+### Şema güncellemesi veri tabanına aktarımı - migration
+
+```csharp
+public class ShopContext:DbContext 
+{
+public DbSet<Product> Products {get;set;}
+public DbSet<Category> Categories {get;set;}
+public DbSet<Order> Orders {get;set;}
+
+protected override void OnConfiguring(DbContextOpitonsBuilder optionsBuilder){
+
+optionsBuilder.UseMysql(@"server=localhost;port=3306;database=Shop;user=root;password=er266914");
+
+}
+}
+
+public class Product{
+
+public int Id {get;set;}
+[MaxLength(100)]
+[Required] 
+public string Name {get;set;}
+
+public decimal Price {get;set;}
+
+public int CategoryId {get;set;}
+/*Örneğin biz CategoryId yi ekledik fakat biz bunu eklediğimizde başta eklediğimiz
+migration a eklenmez bunun için bir aktarım yapmamız gerek terminal'e dotnet ef
+--help yazarak görebilirsiniz*/
+
+/*Terminale şu kodları girmeliyiz dotnet ef migrations add addColumnProductCategoryId
+üstte yazdığımız kodda şunu söyledik Product alanına CategoryId kolonunu ekleyin
+Ama bunlar ile bitmiyor ayriyetden terminale dotnet ef database update yazarak
+databesi i güncellemelisiniz
+*/
+}
+
+public class order{
+//Burayı ekledikden sonra order dbcontext eklemelisiniz
+public int Id {get;set;}
+
+public int ProductId{get;set;}
+
+public DateTime DateAdded {get;set;}
+
+//dotnet ef migrations add addTableOrder terminale yazın ardından
+//dotnet ef database update diyerek güncelleye bilirsiniz
+//Eğer ki yaptığınız son işlemden pişman oldunuz yani eklemek istemediniz 
+//Merak etme çözümü çok basit 
+//dotnet ef database update addCollumnProductCategoryId yani bundan önceki ekledi-
+//ğiniz kolon veya table ın adını girdiğinizde ozamana kadar eklediklerinizi askıya alır
+//Eğer ben silicem derseniz dotnet ef migrations remove diyerek son eklediğinizi siler
+//Not: silmeden önce migration ı databse den çıkarmış olmalısnız yani dotnet ef database update addCollumnProductCategoryId yazarak eylem dışı bırakmalısınız
+//Peki tamamen 0 a dönmek yani hepsini silmek isterseniz dotnet ef database update 0 yazman yeterli
+}
+
 ```
