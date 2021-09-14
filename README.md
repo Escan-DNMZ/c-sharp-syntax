@@ -2,6 +2,7 @@
 # .Net Core 3.1
 
 ---
+//Notlar tamamen Escan Dönmeze e aittir
 
 kod sonları **( ; )** ile belirtilir, stringler alert veya console.log **( ``,''," )( option+, )** ile belirtilir
 
@@ -80,6 +81,8 @@ string plaka; //şeklinde kullanabilirsiniz
 bool? cinsiyetErkek = true
 bool? cinsiyetKadın = true /*eğer kişi cinsiyetini belirtmek istemiyorsa hiçbirini
 seçmeyebilir */
+
+//Notlar tamamen Escan Dönmeze e aittir
 ```
 
 ---
@@ -251,7 +254,7 @@ Console.Writeline(simdi.ToString("F",culture))
 int a = 10;
 int b = 20;
 int val;
-
+//Notlar tamamen Escan Dönmeze e aittir
 Console.Writeline("value "+ val);
 
 val = a + b; // 30
@@ -484,7 +487,7 @@ if(name[i] == 'd'){
 Console.Writeline(name[i]);
 }
 }
-
+//Notlar tamamen Escan Dönmeze e aittir
 ```
 
 ## Nesne tabanlı (OOP)
