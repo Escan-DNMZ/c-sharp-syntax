@@ -1,5 +1,4 @@
-# .net-core-syntax
-# .Net Core 3.1
+# C# Notlarım
 
 ---
 //Notlar tamamen Escan Dönmeze e aittir
